@@ -1,0 +1,24 @@
+{
+  "name": "realestateserver",
+  "version": "1.0.0",
+  "description": "fullstackproject",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agnoorsaivarun/RealEstateServer.git"
+  },
+  "keywords": [
+    "nodejs",
+    "mongodb",
+    "expressjs"
+  ],
+  "author": "group12",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/agnoorsaivarun/RealEstateServer/issues"
+  },
+  "homepage": "https://github.com/agnoorsaivarun/RealEstateServer#readme"
+}
