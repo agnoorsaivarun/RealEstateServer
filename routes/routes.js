@@ -2,11 +2,13 @@ const express  =require("express");
 require("dotenv").config();
 const jwt = require('jsonwebtoken')
 const router = express.Router();
+const User=require('../models/userModel')
+const Properties=require('../models/newPropertyModel')
 
 
 
 router.get('/property', async (req, res) => {
-    res.status(200).send("property GET route")
+  // res.status(200).send("property GET route")
     console.log(`This is cookie from backend ${req.headers.authorization}`);
     // console.log("get route of property")
 
@@ -16,11 +18,11 @@ router.get('/property', async (req, res) => {
         console.log(verifyToken);
         if (verifyToken) {
           console.log(verifyToken);
-          const userDetail = await signupModal.find({ email: verifyToken });
+          const userDetail = await User.find({ email: verifyToken });
           //   console.log(userDetail);
     
           if (userDetail.length) {
-            const propertyData = await userModal.find();
+            const propertyData = await Properties.find();
             res.status(200).send({ property: propertyData, userData: userDetail });
             console.log(userDetail);
           } else {
