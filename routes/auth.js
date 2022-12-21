@@ -7,24 +7,19 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 router.post("/signin", (req, res) => {
-    User
-    .find({ email: req.body.email }) //return a array
+  User.find({ email: req.body.email })
     .then((data) => {
       if (!data.length) {
         res.status(400).send("User doesn't exists!");
-        // console.log(data.length);
       } else {
-        bcrypt
-          .compare(req.body.password, data[0].password)
-          .then((result) => {
-            if (result) {
-              const authToken = jwt.sign(data[0].email, process.env.SC_KEY);
-              res.status(200).send({ authToken });
-            } else {
-              res.status(400).send("Incorrect password");
-            }
-          });
-        // console.log(data.length);
+        bcrypt.compare(req.body.password, data[0].password).then((result) => {
+          if (result) {
+            const authToken = jwt.sign(data[0].email, process.env.SC_KEY);
+            res.status(200).send({ authToken });
+          } else {
+            res.status(400).send("Incorrect password");
+          }
+        });
       }
     })
     .catch((err) => {
@@ -33,19 +28,16 @@ router.post("/signin", (req, res) => {
 });
 
 router.post("/signup", async (req, res) => {
-    await User.find({ email: req.body.email }).then((data) => {
+  await User.find({ email: req.body.email }).then((data) => {
     if (data.length) {
-     return res.status(400).send("User already exists please signIn!");
+      return res.status(400).send("User already exists please signIn!");
     } else {
-     // const newUser = new User({ ...req.body });//creating new user 
-     console.log(req.body);
-     const newUser = new User({
-      username: req.body.username,
-      email: req.body.email,
-      password:req.body.password,
-      Cpassword:req.body.Cpassword      
-    });
-     console.log(newUser);
+      const newUser = new User({
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password,
+        Cpassword: req.body.Cpassword,
+      });
       bcrypt
         .hash(req.body.password, saltRounds)
         .then((hash) => {
@@ -55,7 +47,7 @@ router.post("/signup", async (req, res) => {
           newUser
             .save()
             .then((data) => {
-             return res.status(200).send(data);
+              return res.status(200).send(data);
             })
             .catch((err) => {
               return res.status(403).send(err);
