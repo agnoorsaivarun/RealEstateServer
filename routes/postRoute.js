@@ -1,16 +1,14 @@
 const express = require("express");
 const app = express();
 
-
-const  PropertyDetailsModel=require("../models/newPropertyModel")
-
+const PropertyDetailsModel = require("../models/newPropertyModel")
 
 app.post('/addnewproperty', async (req, res) => {
-        const data= await PropertyDetailsModel.find()
-        let ppid=-1
-        if(data.length===0) ppid=1
-        else ppid=data[data.length-1]._id+1
-        const newProperty = await PropertyDetailsModel({
+    const data = await PropertyDetailsModel.find()
+    let ppid = -1
+    if (data.length === 0) ppid = 1
+    else ppid = data[data.length - 1]._id + 1
+    const newProperty = await PropertyDetailsModel({
         _id: ppid,
         property_type: req.body.property_type,
         price: Number(req.body.price),
