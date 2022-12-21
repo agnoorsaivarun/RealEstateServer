@@ -1,42 +1,38 @@
-const express  =require("express");
+const express = require("express");
 require("dotenv").config();
 const jwt = require('jsonwebtoken')
 const router = express.Router();
-const User=require('../models/userModel')
-const Properties=require('../models/newPropertyModel')
+const User = require('../models/userModel')
+const Properties = require('../models/newPropertyModel')
 
 
 
 router.get('/property', async (req, res) => {
-  // res.status(200).send("property GET route")
-    console.log(`This is cookie from backend ${req.headers.authorization}`);
-    // console.log("get route of property")
+  try {
+    const token = req.headers.authorization;
+    const verifyToken = jwt.verify(token, process.env.SC_KEY);
+    console.log(verifyToken);
+    if (verifyToken) {
+      console.log(verifyToken);
+      const userDetail = await User.find({ email: verifyToken });
+     
 
-    try{
-        const token = req.headers.authorization;
-        const verifyToken = jwt.verify(token, process.env.SC_KEY);
-        console.log(verifyToken);
-        if (verifyToken) {
-          console.log(verifyToken);
-          const userDetail = await User.find({ email: verifyToken });
-          //   console.log(userDetail);
-    
-          if (userDetail.length) {
-            const propertyData = await Properties.find();
-            res.status(200).send({ property: propertyData, userData: userDetail });
-            console.log(userDetail);
-          } else {
-            res.status(409).send("Unauthorized user");
-          }
-          console.log(userDetail);
-        } else {
-          res.status(409).send("Unauthorized user");
-        }
-      } catch (err) {
-        console.log(err);
-        res.status(400).send(err);
-        console.log(err);
+      if (userDetail.length) {
+        const propertyData = await Properties.find();
+        res.status(200).send({ property: propertyData, userData: userDetail });
+        console.log(userDetail);
+      } else {
+        res.status(409).send("Unauthorized user");
       }
+      console.log(userDetail);
+    } else {
+      res.status(409).send("Unauthorized user");
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+    console.log(err);
+  }
 });
 
 
