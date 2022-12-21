@@ -32,12 +32,20 @@ router.post("/signin", (req, res) => {
     });
 });
 
-router.post("/signup", (req, res) => {
-    User.find({ email: req.body.email }).then((data) => {
+router.post("/signup", async (req, res) => {
+    await User.find({ email: req.body.email }).then((data) => {
     if (data.length) {
-      res.status(400).send("User already exists please signIn!");
+     return res.status(400).send("User already exists please signIn!");
     } else {
-      const newUser = new User({ ...req.body });//creating new user 
+     // const newUser = new User({ ...req.body });//creating new user 
+     console.log(req.body);
+     const newUser = new User({
+      username: req.body.username,
+      email: req.body.email,
+      password:req.body.password,
+      Cpassword:req.body.Cpassword      
+    });
+     console.log(newUser);
       bcrypt
         .hash(req.body.password, saltRounds)
         .then((hash) => {
@@ -47,10 +55,10 @@ router.post("/signup", (req, res) => {
           newUser
             .save()
             .then((data) => {
-              res.status(200).send(data);
+             return res.status(200).send(data);
             })
             .catch((err) => {
-              res.status(403).send(err);
+              return res.status(403).send(err);
             });
         })
         .catch((err) => {

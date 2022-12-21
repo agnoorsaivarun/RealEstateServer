@@ -1,16 +1,12 @@
-const express = require('express');
-const app = express();
+const app = require("./app")
 require("dotenv").config()
-const port = process.env.PORT || 8000
-const bodyParser = require('body-parser');
 
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+const port = process.env.PORT || 8000
 
 const mongoose = require('mongoose');
 async function main() {
     await mongoose.connect( process.env.MONGODB_URI);
-    }
+}
 
 main().catch(err => console.log(err)).then(() => console.log("database is connected"));
 
