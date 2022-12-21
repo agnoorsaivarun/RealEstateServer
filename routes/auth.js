@@ -1,13 +1,14 @@
 const express = require("express");
 const User = require("../models/userModel");
 const router = express.Router();
+require("dotenv").config();
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
-const jwt = require("jsonwebtoken");
 
 router.post("/signin", (req, res) => {
     User
-    .find({ email: req.body.email })
+    .find({ email: req.body.email }) //return a array
     .then((data) => {
       if (!data.length) {
         res.status(400).send("User doesn't exists!");
